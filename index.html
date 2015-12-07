@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Ant colony by kusha</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Ant colony</h1>
+      <h2 class="project-tagline">Ant colony optimization demo.</h2>
+      <a href="https://github.com/kusha/ant-colony" class="btn">View on GitHub</a>
+      <a href="https://github.com/kusha/ant-colony/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/kusha/ant-colony/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h2>
+<a id="projekt-předmětu-sfc" class="anchor" href="#projekt-p%C5%99edm%C4%9Btu-sfc" aria-hidden="true"><span class="octicon octicon-link"></span></a>Projekt předmětu SFC</h2>
+
+<pre><code>Autor: Birger Mark, Bc. (xbirge00)
+Varianta: 94, Demonstrace činnosti ACO, Java aplikace
+</code></pre>
+
+<p>Obsah balíku:</p>
+
+<pre><code>./
+├── aco.jar                           spustitelný .jar soubor
+├── report.pdf                        technická zprava
+├── report_with_images.pdf            technická zprava z obrazky
+└── src
+    ├── Main.java                     hlavni třida, inicializuje okno
+    ├── MainViewController.java       ACO, události uživatelského rozhraní
+    ├── Makefile
+    ├── layout.fxml                   popis uživatelského rozhraní
+    └── META-INF
+      └── MANIFEST.MF
+</code></pre>
+
+<p>Řešeným problémem je <strong>úloha obchodního cestujícího</strong>. Na vstupu máme úplný graf. Na výstupu musíme vrátit nejkratší cestu, procházející vsemi uzly.  </p>
+
+<p>Pro řešeni problému obchodního cestujícího využil jsem algoritmy <strong>ACO (Ant Colony Optimization)</strong>. Implementoval jsem základní algoritmus <em>ant cycle</em>, a všechny ho modifikace, probraný v rámci přednášek: <em>ant density</em>, <em>ant quantity</em>, <em>elitist strategy</em>, <em>max-min ant system</em>, <em>rank-based ant system</em>, <em>ant colony system</em>. Ovšem, da se řešit problém obchodního cestujícího pomoci ACO jen přibližně, ale kladem jsou prakticky použitelný casy. </p>
+
+<h2>
+<a id="implementace" class="anchor" href="#implementace" aria-hidden="true"><span class="octicon octicon-link"></span></a>Implementace</h2>
+
+<p>Programovací jazyk projektu je Java, <strong>verze 8</strong>.</p>
+
+<p>Rozhodl jsem implementovat grafické uživatelské rozhraní, abych znázornit zadaní vstupního grafu a zobrazeni nalezené cesty. Pro implementace grafického uživatelského rozhraní byla zvolena knihovna JavaFX 8. Výrobcem knihovny JavaFX je Orcale, proto od verze Java 8, JavaFX je součásti distribuce JRE/JDK.</p>
+
+<p>Jako vývojové prostředí využíval jsem <em>JetBrains IDEA</em>, pro návrh uživatelského rozhraní jsem využil <em>JavaFX SceneBuilder</em>, který umožňuje interaktivně rozmístit prvky uživatelského rozhraní a exportovat .fxml soubor, který se da využít už uvnitř aplikace.</p>
+
+<p>Během implementace došlo ke drobným změnám ant cycle algoritmu:</p>
+
+<ul>
+<li>cely algoritmus je rozdělen do třech části, abych vyvolávat každou novou iterace pomoci události od grafického uživatelského rozhraní</li>
+<li>modifikovaný metody jsou implementovaný pomoci smyček v základním ant-cycle algoritmu</li>
+</ul>
+
+<h2>
+<a id="překlad" class="anchor" href="#p%C5%99eklad" aria-hidden="true"><span class="octicon octicon-link"></span></a>Překlad</h2>
+
+<pre><code>cd ./src
+make
+make run
+make clean
+</code></pre>
+
+<p>Překlad vyžaduje nainstalovaný JDK8 (<code>javac</code>, <code>jar</code> a <code>java</code>). Manuální překlad ověřen na systémech: Ubuntu 14.04, MacOSX 10.10. Spustitelný .jar soubor ověřen navic na systemech: Windows 7, Windows 10.</p>
+
+<h2>
+<a id="návod-na-použity" class="anchor" href="#n%C3%A1vod-na-pou%C5%BEity" aria-hidden="true"><span class="octicon octicon-link"></span></a>Návod na použity</h2>
+
+<p>Takhle vypadá uživatelské rozhraní vytvořeného programu:</p>
+
+<p><img src="/Users/kusha/Desktop/resized/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-06%20%D0%B2%2017.00.57.png%20=500x" alt="image"></p>
+
+<p>Uprostřed okna umístěno plátno, které má bílé pozadí. Pomoci <strong>levého tlačítka</strong> myšy uživatel může přidávat uzly (modré body v režimu úpravy grafu). Pomoci <strong>pravého tlačítka</strong> odstraňuje se nejbližší uzel. Pomoci <strong>levého tlačítka</strong> mysy a současné stisknuté klávesy <code>Ctrl</code> posune se nejbližší uzel na aktuální pozici.</p>
+
+<p>Abych zpracovávat graf, je potřeba přidat alespoň dva body. Pote uživatel může stisknout tlačítko <code>Start algorithm</code> v dolním pravém uhlu. Pak program zobrazí vysledek.</p>
+
+<p><img src="/Users/kusha/Desktop/resized/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-06%20%D0%B2%2016.55.16.png%20=400x" alt="image"></p>
+
+<p>Na platně se zobrazí cesta oranžovou barvou. Kazdy uzel označí se růžovou barvou různé intenzity. Intenzita růžové barvy označuje nejlepší cestu mravence (od světlo-růžové až k červené). Tohle potřeba, abych zvýraznit nalezenou cestu v případě velkého (100+) poctu uzlu. </p>
+
+<p>Po spuštěni algoritmu v levé dolní části okna obnoví se 3 parametry:</p>
+
+<ul>
+<li>čas, který trval vypočet <em>(Time)</em>
+</li>
+<li>délka nalezené cesty <em>(Distance)</em>
+</li>
+<li>rozdíl mezi, předchozí délkou nalezené cesty <em>(Distance delta)</em>
+</li>
+</ul>
+
+<p>Poslední parametr je užitečný při porovnaní různých konfigurace algoritmu. </p>
+
+<p>Uživatel může zvolit potřebnou modifikace algoritmu v přepínače ACO method. Dostupné metody jsou: <em>ant-cycle, ant-density, ant-quantity, elitist-strategy, max-min-as, rank-based-as, acs</em>.</p>
+
+<p>Abych vrátit se do režimu opravy grafu je potřeba stisknout tlačítko <code>Edit</code> v pravém horním uhlu. Když uživatel se nachází v režimu editace grafu, může smazat všechny uzlu pomoci tlačítka <code>Wipe</code>. V dolní části okna umístěn přepínač <code>Preload map</code>. Uživatel může zvolit jednu z dostupných map:</p>
+
+<ul>
+<li>kružnice <em>(circle)</em>
+</li>
+<li>náhodné umístěni 20ti uzlu <em>(random20)</em>
+</li>
+<li>náhodné umístěni 100 uzlu <em>(random100)</em>
+</li>
+<li>úsměv <em>(smile)</em>
+</li>
+<li>rozmístěni velkých mest CR <em>(czech)</em>
+</li>
+</ul>
+
+<p>Tlačítko <code>Load</code> smaže aktuální graf a nahradí ho přednastaveným způsobem. Velmi užitečným způsobem naplňovaní grafu je náhodné umístěni uzlu.</p>
+
+<p>V levé části okna jsou umístěny různý "slidery", který umožňuj nastavit parametry algoritmu. Po navedeni myši na každý parametr zobrazí se nápověda s významem tohoto parametru. Nejdůležitějšími parametry jsou <strong>m</strong> (počet mravenců) a <strong>Cmax</strong> (počet iteraci). Tyhle hodnoty mají nejvyšší vliv na kvalitu výsledné cesty. Pod čarou umístěny parametry pro rozšířené metody (<em>max-min</em>, <em>rank-based</em> a <em>ACS</em>). <em>Alpha</em> a <em>beta</em> pro experimentální účely mohou nabývat hodnot mene než jenda, což má zajímavý záporný vliv na výsledek. Vedle hodnot <em>min</em> a <em>max</em> jsou uveden symbol <em>, tyhle hodnoty opravdu 100x menší, než napsáno. Interval pro *min</em> a <em>max</em> parametry byl zjištěn experimentálně.</p>
+
+<p>Uživatel může nastavit hodnoty na stejné jako po spuštěni programu pomoci tlačítka <code>Set defaults</code>. Označeni (Checkbox) <code>Start on options update</code> je užitečné pro porovnaní různých vstupních parametru. V tomto režimu, po uvolněni "slideru", algoritmus spustí se automaticky. </p>
+
+<p>Taky důležité i označeni (checkbox) <code>Step-by-step</code> nahoře. Po spusteni algoritmu v tomto režimu, program umožňuje podívat na cesty mravenců a intenzitu feromonových stop na každé iterace. Posun do další iterace provádí se pomoci tlačítka <code>Next</code>. Přepínač (ants/pheromone) přepíná zobrazeni cest mravenců a feromonových sto:.</p>
+
+<p><img src="/Users/kusha/Desktop/resized/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-06%20%D0%B2%2016.56.13.png%20=400x" alt="image">
+<img src="/Users/kusha/Desktop/resized/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-06%20%D0%B2%2016.56.23.png%20=400x" alt="image"></p>
+
+<p>Jednotlivé barvy odpovídají jednotlivým mravencům. V případě zobrazovaní feromonových stop, tmavší černa barva označuje vetší počet feromonu.</p>
+
+<h2>
+<a id="vizualizace" class="anchor" href="#vizualizace" aria-hidden="true"><span class="octicon octicon-link"></span></a>Vizualizace</h2>
+
+<p>V případě zobrazeni cest mravenců, narazil jsem na problém zobrazeni velkého poctu dat na malém platně. Mel jsem různý varianty zobrazovan:.</p>
+
+<p><img src="/Users/kusha/Desktop/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-05%20%D0%B2%2016.11.13.png%20=150x" alt="image">
+<img src="/Users/kusha/Desktop/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-05%20%D0%B2%2016.15.47.png%20=150x" alt="image">
+<img src="/Users/kusha/Desktop/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-05%20%D0%B2%2016.17.39.png%20=150x" alt="image">
+<img src="/Users/kusha/Desktop/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-05%20%D0%B2%2016.22.13.png%20=150x" alt="image">
+<img src="/Users/kusha/Desktop/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-05%20%D0%B2%2016.23.18.png%20=150x" alt="image"></p>
+
+<p>Na konci jsem přisel k speciálnímu algoritmu, který obarvuje jednotlivé cesty a inteligentně posouvá cesty pro znázorněni.</p>
+
+<p><img src="/Users/kusha/Desktop/resized/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-06%20%D0%B2%2018.20.45.png%20=400x" alt="image"></p>
+
+<h2>
+<a id="ověřovaní-funkčnosti" class="anchor" href="#ov%C4%9B%C5%99ovan%C3%AD-funk%C4%8Dnosti" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ověřovaní funkčnosti</h2>
+
+<p>Jsem ověřil správnost nalezených cest pomoci grafu, body kterého tvoří kružnice:</p>
+
+<p><img src="/Users/kusha/Desktop/resized/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-06%20%D0%B2%2018.19.30.png%20=300x" alt="image"></p>
+
+<p>Všichni metody nalezli tuto nejkratší cestu, feromonový stopy taky mají vetší hodnoty na okrajových hranách:</p>
+
+<p><img src="/Users/kusha/Desktop/resized/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-06%20%D0%B2%2018.25.23.png%20=300x" alt="image"></p>
+
+<h2>
+<a id="výsledky" class="anchor" href="#v%C3%BDsledky" aria-hidden="true"><span class="octicon octicon-link"></span></a>Výsledky</h2>
+
+<p>Navrhnul jsem cestu, kolem které jsem umístil uzlu grafu. Dole umístěny intenzity feromonových stop pro různý metody na 11te iterace pro stejný graf. Vyhodnotil jsem metody podle "<strong>čistoty</strong>" feromonových stop a zbytečných <strong>lokálních extrému</strong>.</p>
+
+<h4>
+<a id="ant-cycle" class="anchor" href="#ant-cycle" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ant Cycle</h4>
+
+<p>Referenční výsledek, střední "čistota" grafu.</p>
+
+<p><img src="/Users/kusha/Desktop/resized/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-06%20%D0%B2%2018.48.09.png%20=300x" alt="image"></p>
+
+<h4>
+<a id="ant-density" class="anchor" href="#ant-density" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ant-density</h4>
+
+<p>Vidíme, jak náhodné dlouhé cesty taky přidaný do feromonových stop (není děleni Lk).</p>
+
+<p><img src="/Users/kusha/Desktop/resized/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-06%20%D0%B2%2018.47.55.png%20=300x" alt="image"></p>
+
+<h4>
+<a id="ant-quantity" class="anchor" href="#ant-quantity" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ant-quantity</h4>
+
+<p>Délka hrany ovlivňuje, a význačné posiluje velmi malý hrany. Ovsem, graf je čistější než u Ant Cycle.</p>
+
+<p><img src="/Users/kusha/Desktop/resized/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-06%20%D0%B2%2018.47.40.png%20=300x" alt="image"></p>
+
+<h4>
+<a id="elitist-strategy" class="anchor" href="#elitist-strategy" aria-hidden="true"><span class="octicon octicon-link"></span></a>Elitist strategy</h4>
+
+<p>Velmi cisty graf, ovsem vidíme lokální extrémy na rozdíl od Ant Colony System.</p>
+
+<p><img src="/Users/kusha/Desktop/resized/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-06%20%D0%B2%2018.47.21.png%20=300x" alt="image"></p>
+
+<h4>
+<a id="max-min-ant-system" class="anchor" href="#max-min-ant-system" aria-hidden="true"><span class="octicon octicon-link"></span></a>Max-min Ant System</h4>
+
+<p>Max-min nedokázal dobry výsledky a vyžaduje přesnou manuální konfiguraci.</p>
+
+<p><img src="/Users/kusha/Desktop/resized/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-06%20%D0%B2%2018.37.13.png%20=300x" alt="image"></p>
+
+<h4>
+<a id="rank-based-ant-system" class="anchor" href="#rank-based-ant-system" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rank-based Ant System</h4>
+
+<p>10 lepších ze 20. Graf není cisty, vidíme neoptimální cesty z počátečních iteraci. Pravděpodobně tato metoda vyžaduje vetší počet iteraci.</p>
+
+<p><img src="/Users/kusha/Desktop/resized/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-06%20%D0%B2%2018.37.30.png%20=300x" alt="image"></p>
+
+<p>15 lepších ze 20. Výsledek je lepší při stejném poctu iteraci, ale už připomíná Ant Cycle.</p>
+
+<p><img src="/Users/kusha/Desktop/resized/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-06%20%D0%B2%2018.46.24.png%20=300x" alt="image"></p>
+
+<h4>
+<a id="ant-colony-system" class="anchor" href="#ant-colony-system" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ant colony system</h4>
+
+<p>"Cisty" graf, neobsahuje lokální extrémy na rozdíl od Elitist strategy. Nejlepší metoda.</p>
+
+<p><img src="/Users/kusha/Desktop/resized/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202015-12-06%20%D0%B2%2018.37.50.png%20=300x" alt="image"></p>
+
+<h3>
+<a id="výsledná-aplikace" class="anchor" href="#v%C3%BDsledn%C3%A1-aplikace" aria-hidden="true"><span class="octicon octicon-link"></span></a>Výsledná aplikace:</h3>
+
+<ul>
+<li>ověřena</li>
+<li>znázorňuje klady a zápory různých metod ACO</li>
+<li>může byt využita pro demonstrace/vyuku metod ACO</li>
+<li>vizuálně demonstruje algoritmy na každé iteraci</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/kusha/ant-colony">Ant colony</a> is maintained by <a href="https://github.com/kusha">kusha</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
