@@ -2,8 +2,7 @@
   import {onMount} from 'svelte';
   import Konva from 'konva';
 
-  export let posX = 50;
-  export let posY = 50;
+  export let nodes = [];
 
   let canvasContainer;
 
@@ -14,23 +13,37 @@
       height: 600,
     });
 
-    var layer = new Konva.Layer();
+    if (true) {
+      var nodesLayer = drawNodes(nodes)
+    }
 
-    var circle = new Konva.Circle({
-      x: posX,
-      y: posY,
-      radius: 4,
-      fill: 'white',
-      stroke: 'blue',
-      strokeWidth: 1,
-    });
+    stage.add(nodesLayer);
+  }
 
-    // add the shape to the layer
-    layer.add(circle);
+  function drawNodes(nodes) {
+    let layer = new Konva.Layer();
 
-    // add the layer to the stage
-    stage.add(layer);
+    for (var node of nodes) {
+      let circle = new Konva.Circle({
+        x: node.x,
+        y: node.y,
+        radius: 4,
+        fill: 'white',
+        stroke: 'blue',
+        strokeWidth: 1,
+      });
+      layer.add(circle);
+    }
+    
+    return layer
+  }
 
+  function addNode(event) {
+    if (event.buttons == 1) { // LMB
+      nodes.push({x: event.layerX, y: event.layerY})
+    }
+    console.log("click on canvas", event);
+    drawCanvas();
   }
 
   onMount(drawCanvas)
@@ -41,7 +54,7 @@
 
 <div class="card">
   <div class="card-body">
-    <div bind:this={canvasContainer}/>
+    <div bind:this={canvasContainer} on:mousedown|preventDefault={addNode}/>
   </div>
 </div>
 

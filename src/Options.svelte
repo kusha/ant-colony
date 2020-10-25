@@ -25,10 +25,3 @@ let runOnUpdate = false;
     </div>
   </div>
 </div>
-
-<style>
-  .card {
-    margin-bottom: 20px;
-  }
-</style>
-
